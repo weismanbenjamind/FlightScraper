@@ -1,0 +1,11 @@
+{
+    "Trips": [
+        {
+            "WhereTo": "Columbus, Ohio",
+            "WhereFrom": "Seattle, Washington",
+            "DepartureDay": "Friday",
+            "ReturningDay": "Sunday",
+            "DepartureDate": "11-11-2022"
+        }
+    ]
+}
