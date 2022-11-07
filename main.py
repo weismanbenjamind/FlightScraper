@@ -49,13 +49,13 @@ def main():
         raise Exception('Error creating user inputs') from ex
 
     # Instantiate webscrapers
+    print('Instantiating webscraper')
     try:
         web_scraper_factory = WebscraperFactory(appsettings.path_to_chromedriver)
-        print('Instantiating webscrape manager')
         webscrapers = web_scraper_factory.create_webscrapers(appsettings.search_engine_settings)
         webscrape_manager = WebscrapeManager(webscrapers, user_inputs.trips, appsettings.hours_between_scrapes)
     except Exception as ex:
-        raise Exception('Error creating webscrape manager') from ex
+        raise Exception('Error creating webscrapers') from ex
 
     # Scrape
     while True:
