@@ -1,14 +1,14 @@
 from Library.Webscrapers.GoogleFlightsWebscraper import GoogleFlightsWebscraper
 from Library.Webscrapers.IWebscraper import IWebscraper
 from Library.IO.SearchEngineSetting import SearchEngineSetting
-from typing import Iterable
+from typing import Iterable, List
 
 class WebscraperFactory:
     _WEBSCRAPER_MAP = {
         'GoogleFlights': GoogleFlightsWebscraper
     }
 
-    def __init__(self, path_to_chromedriver) -> None:
+    def __init__(self, path_to_chromedriver: str) -> None:
         self._path_to_chromedriver = path_to_chromedriver
 
     def _create_webscraper(self, webscraper_name: str, base_url: str) -> IWebscraper:
@@ -23,7 +23,7 @@ class WebscraperFactory:
         except Exception as ex:
             raise Exception(f'Error instantiating webscraper {webscraper_name}') from ex
 
-    def create_webscrapers(self, search_engine_settings: Iterable[SearchEngineSetting]):
+    def create_webscrapers(self, search_engine_settings: Iterable[SearchEngineSetting]) -> List[IWebscraper]:
         return [self._create_webscraper(search_engine_setting.name, search_engine_setting.base_url) for search_engine_setting in search_engine_settings]
 
 if __name__ == '__main__':

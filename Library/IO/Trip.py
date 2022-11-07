@@ -1,7 +1,7 @@
-from typing import Dict, Union
 from Library.Validators.DateValidator import DateValidator
 from Library.Services.DatetimeService import DatetimeService
 from Library.Exceptions.MaxTripDateError import MaxTripDateError
+from typing import Dict, Union
 from datetime import datetime
 
 class Trip:

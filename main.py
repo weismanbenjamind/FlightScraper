@@ -2,9 +2,8 @@ import argparse
 from Library.Validators.CommandLineArgsValidator import CommandLineArgsValidator
 from Library.IO.JsonParser import JsonParser
 from Library.IO.Appsettings import Appsettings
-from Library.Factories.WebscraperFactory import WebscraperFactory
 from Library.IO.UserInputs import UserInputs
-from Library.Exceptions.MaxTripDateError import MaxTripDateError
+from Library.Factories.WebscraperFactory import WebscraperFactory
 from Library.Managers.WebscrapeManager import WebscrapeManager
 
 def main():
@@ -49,7 +48,7 @@ def main():
     except Exception as ex:
         raise Exception('Error creating user inputs') from ex
 
-    # Instantiate WebscrapeManager
+    # Instantiate webscrapers
     try:
         web_scraper_factory = WebscraperFactory(appsettings.path_to_chromedriver)
         print('Instantiating webscrape manager')

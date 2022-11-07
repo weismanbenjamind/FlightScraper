@@ -1,8 +1,7 @@
-from typing import Dict, Union, List
 from Library.IO.SearchEngineSetting import SearchEngineSetting
+from typing import Dict, Union, List
 
 class Appsettings():
-
 
     def __init__(self, appsettings_dict: Dict[str, Union[str, List[Dict[str, str]]]]) -> None:
         try:

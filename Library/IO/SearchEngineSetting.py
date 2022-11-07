@@ -2,7 +2,7 @@ from typing import Dict
 
 class SearchEngineSetting:
 
-    def __init__(self, search_engine_settings_dict: Dict[str, str]):
+    def __init__(self, search_engine_settings_dict: Dict[str, str]) -> None:
         try:
             self.name = search_engine_settings_dict['Name']
             self.base_url = search_engine_settings_dict['BaseURL']

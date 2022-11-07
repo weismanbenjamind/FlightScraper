@@ -3,7 +3,7 @@ from typing import Any
 class CommandLineArgsValidator:
 
     @staticmethod
-    def validate(args: Any):
+    def validate(args: Any) -> None:
         target_keys = [
             'user_inputs',
             'appsettings'

@@ -2,7 +2,7 @@ from Library.Validators.IFileValidator import IFileValidator
 
 class ChromedriverValidator(IFileValidator):
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
     def validate(self, path_to_chromedriver: str) -> None:

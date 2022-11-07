@@ -1,7 +1,6 @@
-import pandas as pd
+from Library.Validators.ChromedriverValidator import ChromedriverValidator
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from Library.Validators.ChromedriverValidator import ChromedriverValidator
 from selenium.webdriver.support.ui import WebDriverWait
 from datetime import datetime
 from typing import Any
@@ -19,19 +18,19 @@ class IWebscraper:
         self._end_date = None
         
 
-    def scrape(elf, home: str, destination: str, start_date: datetime, end_date: datetime ) -> pd.DataFrame:
-        raise NotImplementedError('IWebscraper.scrape() is a virtual method and needs to be overriden')
+    def scrape(self, **kwargs) -> None:
+        try:
+            self._where_from = kwargs['where_from']
+            self._where_to = kwargs['where_to']
+            self._start_date = kwargs['departure_date']
+            self._end_date = kwargs['return_date']
+        except KeyError as ex:
+            raise Exception(f'Webscraper.scrape() needs kwarg {ex.args[0]}')
 
-    def _find_element_with_wait(self, by: By, element: Any, wait_time_seconds = 10):
+    def _find_element_with_wait(self, by: By, element: Any, wait_time_seconds = 10) -> Any:
         return WebDriverWait(self._webdriver, wait_time_seconds).until(lambda x: x.find_element(by, element))
 
-    def _reset(self):
-        self._where_from = ''
-        self._where_to = ''
-        self._start_date = None
-        self._end_date = None
-
-    def close(self):
+    def close(self) -> None:
         self._reset()
         self._webdriver.close()
 

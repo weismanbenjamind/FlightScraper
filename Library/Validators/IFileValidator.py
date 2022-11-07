@@ -17,7 +17,7 @@ class IFileValidator:
         if not self._current_file_path.endswith(filetype):
             raise OSError(f'Expected filepath {self._current_file_path} to lead to a {filetype} file')
 
-    def validate(self):
+    def validate(self) -> None:
         raise NotImplementedError('IValidator.validate() is a virtual method and must be overriden')
 
     def set_current_file_path(self, filepath: str) -> None:

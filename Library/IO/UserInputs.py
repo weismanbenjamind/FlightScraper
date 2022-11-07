@@ -1,5 +1,5 @@
-from typing import Dict, Union
 from Library.IO.Trip import Trip
+from typing import Dict, Union
 
 class UserInputs:
 
