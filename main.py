@@ -5,6 +5,7 @@ from Library.IO.Appsettings import Appsettings
 from Library.Factories.WebscraperFactory import WebscraperFactory
 from Library.IO.UserInputs import UserInputs
 from Library.Exceptions.MaxTripDateError import MaxTripDateError
+from Library.Managers.WebscrapeManager import WebscrapeManager
 
 def main():
 
@@ -48,24 +49,19 @@ def main():
     except Exception as ex:
         raise Exception('Error creating user inputs') from ex
 
-    # Create all necessary webscrapers
-    web_scraper_factory = WebscraperFactory()
-    webscrapers = []
-    print('Instantiating webscrapers')
-    for search_engine_setting in appsettings.search_engine_settings:
-        webscrapers.append(web_scraper_factory.create_webscraper(search_engine_setting.name, search_engine_setting.base_url, appsettings.path_to_chromedriver))
+    # Instantiate WebscrapeManager
+    try:
+        web_scraper_factory = WebscraperFactory(appsettings.path_to_chromedriver)
+        print('Instantiating webscrape manager')
+        webscrapers = web_scraper_factory.create_webscrapers(appsettings.search_engine_settings)
+        webscrape_manager = WebscrapeManager(webscrapers, user_inputs.trips, appsettings.hours_between_scrapes)
+    except Exception as ex:
+        raise Exception('Error creating webscrape manager') from ex
 
     # Scrape
-    print('Scraping')
-    for webscraper in webscrapers:
-        for trip in user_inputs.trips:
-            while True:
-                webscraper.scrape(**trip.get_search_settings())
-                try:
-                    trip.try_update()
-                except MaxTripDateError:
-                    break
-        webscraper.close()
+    while True:
+        webscrape_manager.scrape()
+        webscrape_manager.sleep()
 
 if __name__ == '__main__':
     main()

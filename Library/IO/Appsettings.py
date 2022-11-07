@@ -7,7 +7,7 @@ class Appsettings():
     def __init__(self, appsettings_dict: Dict[str, Union[str, List[Dict[str, str]]]]) -> None:
         try:
             self.path_to_chromedriver = appsettings_dict['PathToChromeDriver']
-            self.seconds_between_scrapes = appsettings_dict['SecondsBetweenScrapes']
+            self.hours_between_scrapes = appsettings_dict['HoursBetweenScrapes']
             self.search_engine_settings = appsettings_dict['SearchEngineSettings']
         except KeyError as ex:
             raise Exception(f'Appsettings missing value for {ex.args[0]}')
