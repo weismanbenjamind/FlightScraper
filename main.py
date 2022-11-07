@@ -1,10 +1,10 @@
-import argparse
 from Library.Validators.CommandLineArgsValidator import CommandLineArgsValidator
 from Library.IO.JsonParser import JsonParser
 from Library.IO.Appsettings import Appsettings
 from Library.IO.UserInputs import UserInputs
 from Library.Factories.WebscraperFactory import WebscraperFactory
 from Library.Managers.WebscrapeManager import WebscrapeManager
+import argparse
 
 def main():
 
