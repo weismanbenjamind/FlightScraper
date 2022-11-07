@@ -5,7 +5,9 @@
             "WhereFrom": "Seattle, Washington",
             "DepartureDay": "Friday",
             "ReturningDay": "Sunday",
-            "DepartureDate": "11-11-2022"
+            "InitialDepartureDate": "11-18-2022",
+            "InitialReturnDate": "11-27-2022",
+            "MaxTripDate": "01-01-2023"
         }
     ]
 }

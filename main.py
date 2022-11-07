@@ -4,7 +4,7 @@ from Library.IO.JsonParser import JsonParser
 from Library.IO.Appsettings import Appsettings
 from Library.Factories.WebscraperFactory import WebscraperFactory
 from Library.IO.UserInputs import UserInputs
-import time
+from Library.Exceptions.MaxTripDateError import MaxTripDateError
 
 def main():
 
@@ -30,7 +30,7 @@ def main():
     # Validate command line arguments
     print('Validating command line arguments')
     try:
-        CommandLineArgsValidator(args).validate()
+        CommandLineArgsValidator.validate(args)
     except Exception as ex:
         raise Exception('Invalid command line arguments') from ex
 
@@ -48,18 +48,23 @@ def main():
     except Exception as ex:
         raise Exception('Error creating user inputs') from ex
 
+    # Create all necessary webscrapers
     web_scraper_factory = WebscraperFactory()
     webscrapers = []
-
     print('Instantiating webscrapers')
     for search_engine_setting in appsettings.search_engine_settings:
         webscrapers.append(web_scraper_factory.create_webscraper(search_engine_setting.name, search_engine_setting.base_url, appsettings.path_to_chromedriver))
 
+    # Scrape
     print('Scraping')
     for webscraper in webscrapers:
         for trip in user_inputs.trips:
-            webscraper.scrape(trip.where_from, trip.where_to, trip.departure_date, '12-01-2022')
-        time.sleep(10)
+            while True:
+                webscraper.scrape(**trip.get_search_settings())
+                try:
+                    trip.try_update()
+                except MaxTripDateError:
+                    break
         webscraper.close()
 
 if __name__ == '__main__':

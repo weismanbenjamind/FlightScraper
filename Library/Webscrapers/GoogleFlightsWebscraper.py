@@ -2,7 +2,6 @@ from typing import Any, Dict
 from Library.Webscrapers.IWebscraper import IWebscraper
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from datetime import datetime
 
 class GoogleFlightsWebscraper(IWebscraper):
     
@@ -15,11 +14,15 @@ class GoogleFlightsWebscraper(IWebscraper):
     def __init__(self, base_url: str, path_to_chromedriver: str) -> None:
         super().__init__(base_url, path_to_chromedriver)
 
-    def scrape(self, where_from: str, where_to: str, start_date: datetime, end_date: datetime) -> Dict[str, Any]:
-        self._where_from = where_from
-        self._where_to = where_to
-        self._start_date = start_date
-        self._end_date = end_date
+    def scrape(self, **kwargs) -> Dict[str, Any]:
+        try:
+            self._where_from = kwargs['where_from']
+            self._where_to = kwargs['where_to']
+            self._start_date = kwargs['departure_date']
+            self._end_date = kwargs['return_date']
+        except KeyError as ex:
+            raise Exception(f'Webscraper.scrape() needs kwarg {ex.args[0]}')
+
         self._webdriver.get(self._base_url)
         self._input_where_from()
         self._input_where_to()
