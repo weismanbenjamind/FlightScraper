@@ -75,7 +75,7 @@ def main():
     # Scrape
     print('Scraping')
     while True:
-        webscrape_manager.scrape().to_csv('flight_data.csv', index = False)
+        webscrape_manager.scrape().sort_values(by = 'Price(USD)').to_csv('flight_data.csv', index = False)
         webscrape_manager.sleep()
 
 if __name__ == '__main__':

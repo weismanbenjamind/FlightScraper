@@ -39,7 +39,7 @@ class DateValidator:
     @staticmethod
     def validate_day_of_week(datetime_obj: datetime, target_day_of_week: str) -> None:
         actual_day_of_week = DatetimeService.get_day_of_week(datetime_obj)
-        if not actual_day_of_week != target_day_of_week:
+        if actual_day_of_week != target_day_of_week:
             raise ValueError(f'Date of {datetime_obj} is a {actual_day_of_week}. Expected {target_day_of_week}')
 
 if __name__ =='__main__':

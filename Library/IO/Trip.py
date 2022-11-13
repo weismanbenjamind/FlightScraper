@@ -32,10 +32,10 @@ class Trip:
         self._max_trip_date = DatetimeService.mm_dd_yyyy_to_datetime(self._max_trip_date)
 
     def try_update(self) -> None:
-        self._departure_date = DatetimeService.add_days(self._departure_date, self._trip_length)
+        self._departure_date = DatetimeService.add_days(self._departure_date, 7)
         DateValidator.validate_day_of_week(self._departure_date, self._departure_day)
         self._validate_date_less_than_max_date(self._departure_date)
-        self._return_date = DatetimeService.add_days(self._return_date, self._trip_length)
+        self._return_date = DatetimeService.add_days(self._return_date, 7)
         DateValidator.validate_day_of_week(self._return_date, self._returning_day)
         self._validate_date_less_than_max_date(self._return_date)
 
