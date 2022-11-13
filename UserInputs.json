@@ -7,7 +7,43 @@
             "ReturningDay": "Sunday",
             "InitialDepartureDate": "11-18-2022",
             "InitialReturnDate": "11-27-2022",
-            "MaxTripDate": "01-01-2023"
+            "MaxTripDate": "02-25-2023"
+        },
+        {
+            "WhereTo": "Columbus, Ohio",
+            "WhereFrom": "Salt Lake City, Utah",
+            "DepartureDay": "Friday",
+            "ReturningDay": "Sunday",
+            "InitialDepartureDate": "11-18-2022",
+            "InitialReturnDate": "11-27-2022",
+            "MaxTripDate": "02-25-2023"
+        },
+        {
+            "WhereTo": "Columbus, Ohio",
+            "WhereFrom": "Denver, Colorado",
+            "DepartureDay": "Friday",
+            "ReturningDay": "Sunday",
+            "InitialDepartureDate": "11-18-2022",
+            "InitialReturnDate": "11-27-2022",
+            "MaxTripDate": "02-25-2023"
+        },
+        {
+            "WhereTo": "Columbus, Ohio",
+            "WhereFrom": "San Francisco, California",
+            "DepartureDay": "Friday",
+            "ReturningDay": "Sunday",
+            "InitialDepartureDate": "11-18-2022",
+            "InitialReturnDate": "11-27-2022",
+            "MaxTripDate": "02-25-2023"
+        },
+        {
+            "WhereTo": "Columbus, Ohio",
+            "WhereFrom": "Las Angeles, California",
+            "DepartureDay": "Friday",
+            "ReturningDay": "Sunday",
+            "InitialDepartureDate": "11-18-2022",
+            "InitialReturnDate": "11-27-2022",
+            "MaxTripDate": "02-25-2023"
         }
     ]
 }
