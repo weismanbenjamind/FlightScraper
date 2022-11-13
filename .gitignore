@@ -130,3 +130,6 @@ dmypy.json
 
 # .DS_Store for mac
 */.DS_Store
+
+# Output
+*flight_data.csv

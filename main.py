@@ -1,3 +1,9 @@
+#TODO:
+    # Make sure actually inputing correct dates
+    # Create way to email results
+    # Create time manager (maybe decorator) to manage how frequently scrapes take place
+    # Clean code
+
 from Library.Validators.CommandLineArgsValidator import CommandLineArgsValidator
 from Library.IO.JsonParser import JsonParser
 from Library.IO.Appsettings import Appsettings
@@ -57,9 +63,19 @@ def main():
     except Exception as ex:
         raise Exception('Error creating webscrapers') from ex
 
+    # Cleanup objects that are no longer needed
+    del arg_parser
+    del args
+    del json_parser
+    del user_inputs
+    del appsettings
+    del web_scraper_factory
+    del webscrapers
+
     # Scrape
+    print('Scraping')
     while True:
-        webscrape_manager.scrape()
+        webscrape_manager.scrape().to_csv('flight_data.csv', index = False)
         webscrape_manager.sleep()
 
 if __name__ == '__main__':

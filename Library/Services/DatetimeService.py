@@ -5,7 +5,6 @@ class DatetimeService:
 
     @staticmethod
     def mm_dd_yyyy_to_datetime(mm_dd_yyyy_date: str) -> datetime.datetime:
-        mm_dd_yyyy_datetime_code = '%m-%d-%Y'
         return datetime.datetime.strptime(mm_dd_yyyy_date, DatetimeService._MM_DD_YYYY_DATETIME_CODE)
 
     @staticmethod
