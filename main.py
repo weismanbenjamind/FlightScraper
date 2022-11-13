@@ -1,8 +1,11 @@
 #TODO:
-    # Make sure actually inputing correct dates
+    # See why long term trips are failing
     # Create way to email results
     # Create time manager (maybe decorator) to manage how frequently scrapes take place
     # Clean code
+    # Add exceptions handling
+    # Add logging
+    # Combine exceptions with loggin to keep app going upon erroring out
 
 from Library.Validators.CommandLineArgsValidator import CommandLineArgsValidator
 from Library.IO.JsonParser import JsonParser
