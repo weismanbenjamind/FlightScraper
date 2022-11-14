@@ -127,7 +127,7 @@ class GoogleFlightsDataParser:
             for pattern in patterns:
                 match = re.search(pattern, datapoint)
                 if match:
-                    self._append_to_flight_data_dict(field, match.group())
+                    self._append_to_flight_data_dict(field, datapoint)
                     break
 
     def _initialize(self, flight_data_strings: Iterable[str], departure_date: str, return_date: str):

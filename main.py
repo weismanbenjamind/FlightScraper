@@ -1,11 +1,15 @@
 #TODO:
-    # See why long term trips are failing - Fix hack with more flights currently in place
-    # Create way to email results
-    # Create time manager (maybe decorator) to manage how frequently scrapes take place
+    # Create time manager to allow for scrapes to always take place at certain times of day
+        # Needs some kind error bounds
+        # +/- 5 minutes of desired scrape time
+    # See why long term trips are failing
+        # LA flights currently fail - For some reason not entering Las Angeles
     # Clean code
     # Add exception handling
+        # Fix hack with more flights currently in place
     # Add logging
-    # Combine exceptions with loggin to keep app going upon erroring out
+    # Combine exceptions with logging to keep app going upon erroring out
+    # Find way to notify self of results
 
 from Library.Validators.CommandLineArgsValidator import CommandLineArgsValidator
 from Library.IO.JsonParser import JsonParser
@@ -13,6 +17,8 @@ from Library.IO.Appsettings import Appsettings
 from Library.IO.UserInputs import UserInputs
 from Library.Factories.WebscraperFactory import WebscraperFactory
 from Library.Managers.WebscrapeManager import WebscrapeManager
+from Library.Managers.TimeManager import TimeManager
+from Library.IO import IOUtilities
 import argparse
 
 def main():
@@ -78,7 +84,7 @@ def main():
     # Scrape
     while True:
         print('Scraping')
-        webscrape_manager.scrape().to_csv('flight_data.csv', index = False)
+        webscrape_manager.scrape().to_csv(IOUtilities.get_scrape_output_file_name(), index = False)
         print('Sleeping')
         webscrape_manager.sleep()
 

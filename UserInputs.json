@@ -35,15 +35,6 @@
             "InitialDepartureDate": "11-18-2022",
             "InitialReturnDate": "11-27-2022",
             "MaxTripDate": "02-25-2023"
-        },
-        {
-            "WhereFrom": "Columbus, Ohio",
-            "WhereTo": "Las Angeles, California",
-            "DepartureDay": "Friday",
-            "ReturningDay": "Sunday",
-            "InitialDepartureDate": "11-18-2022",
-            "InitialReturnDate": "11-27-2022",
-            "MaxTripDate": "02-25-2023"
         }
     ]
 }

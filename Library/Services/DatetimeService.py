@@ -2,6 +2,7 @@ import datetime
 
 class DatetimeService:
     _MM_DD_YYYY_DATETIME_CODE = '%m-%d-%Y'
+    _CURRENT_DATE_AND_TIME_CODE = '%m-%d-%Y %H:%M'
 
     @staticmethod
     def mm_dd_yyyy_to_datetime(mm_dd_yyyy_date: str) -> datetime.datetime:
@@ -23,6 +24,14 @@ class DatetimeService:
     @staticmethod
     def get_days_between_dates(datetime_obj_1: datetime, datetime_obj_2: datetime) -> float:
         return abs((datetime_obj_1 - datetime_obj_2).days)
+
+    @staticmethod
+    def get_current_date_and_time():
+        return datetime.datetime.now().strftime(DatetimeService._CURRENT_DATE_AND_TIME_CODE)
+
+    @staticmethod
+    def get_minutes_between_dates(datetime_1, datetime_2):
+        return abs((datetime_1 - datetime_2).seconds / 60)
 
 if __name__ == '__main__':
     pass
