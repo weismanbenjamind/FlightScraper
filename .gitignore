@@ -133,3 +133,4 @@ dmypy.json
 
 # Output
 *flight_data.csv
+*ScrapeResults*
