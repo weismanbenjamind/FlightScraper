@@ -1,9 +1,9 @@
 #TODO:
-    # See why long term trips are failing
+    # See why long term trips are failing - Fix hack with more flights currently in place
     # Create way to email results
     # Create time manager (maybe decorator) to manage how frequently scrapes take place
     # Clean code
-    # Add exceptions handling
+    # Add exception handling
     # Add logging
     # Combine exceptions with loggin to keep app going upon erroring out
 
@@ -76,9 +76,10 @@ def main():
     del webscrapers
 
     # Scrape
-    print('Scraping')
     while True:
-        webscrape_manager.scrape().sort_values(by = 'Price(USD)').to_csv('flight_data.csv', index = False)
+        print('Scraping')
+        webscrape_manager.scrape().to_csv('flight_data.csv', index = False)
+        print('Sleeping')
         webscrape_manager.sleep()
 
 if __name__ == '__main__':

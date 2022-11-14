@@ -1,4 +1,4 @@
-from Library.Webscrapers.GoogleFlightsWebscraper import GoogleFlightsWebscraper
+from Library.Webscrapers.GoogleFlightsWebscraper.GoogleFlightsWebscraper import GoogleFlightsWebscraper
 from Library.Webscrapers.IWebscraper import IWebscraper
 from Library.IO.SearchEngineSetting import SearchEngineSetting
 from typing import Iterable, List

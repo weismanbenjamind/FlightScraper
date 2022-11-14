@@ -7,6 +7,8 @@ import time
 
 class WebscrapeManager:
 
+    _SORT_BY_COL = 'Price(USD)'
+
     def __init__(self, webscrapers: Iterable[IWebscraper], trips: Iterable[Trip], hours_between_scrapes: float) -> None:
         self._webscrapers = webscrapers
         self._trips = trips
@@ -19,12 +21,18 @@ class WebscrapeManager:
             webscraper.initialize_webdriver()
             for trip in self._trips:
                 while True:
-                    flight_data = pd.concat([flight_data, webscraper.scrape(**trip.get_search_settings())])
+                    try:
+                        flight_data = pd.concat([flight_data, webscraper.scrape(**trip.get_search_settings())])
+                    except Exception as ex:
+                        trip_info = ', '.join([f'{key}: {value}' for key, value in trip.get_search_settings().items()])
+                        print(f'Error with trip {trip_info}\n{ex}\n')
                     try:
                         trip.try_update()
                     except MaxTripDateError:
                         break
             webscraper.close()
+        if (self._SORT_BY_COL) in flight_data.columns:
+            flight_data.sort_values(by = self._SORT_BY_COL, inplace = True)
         return flight_data
 
     def sleep(self) -> None:

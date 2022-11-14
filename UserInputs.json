@@ -1,8 +1,8 @@
 {
     "Trips": [
         {
-            "WhereTo": "Columbus, Ohio",
-            "WhereFrom": "Seattle, Washington",
+            "WhereFrom": "Columbus, Ohio",
+            "WhereTo": "Seattle, Washington",
             "DepartureDay": "Friday",
             "ReturningDay": "Sunday",
             "InitialDepartureDate": "11-18-2022",
@@ -10,8 +10,8 @@
             "MaxTripDate": "02-25-2023"
         },
         {
-            "WhereTo": "Columbus, Ohio",
-            "WhereFrom": "Salt Lake City, Utah",
+            "WhereFrom": "Columbus, Ohio",
+            "WhereTo": "Salt Lake City, Utah",
             "DepartureDay": "Friday",
             "ReturningDay": "Sunday",
             "InitialDepartureDate": "11-18-2022",
@@ -19,8 +19,8 @@
             "MaxTripDate": "02-25-2023"
         },
         {
-            "WhereTo": "Columbus, Ohio",
-            "WhereFrom": "Denver, Colorado",
+            "WhereFrom": "Columbus, Ohio",
+            "WhereTo": "Denver, Colorado",
             "DepartureDay": "Friday",
             "ReturningDay": "Sunday",
             "InitialDepartureDate": "11-18-2022",
@@ -28,8 +28,8 @@
             "MaxTripDate": "02-25-2023"
         },
         {
-            "WhereTo": "Columbus, Ohio",
-            "WhereFrom": "San Francisco, California",
+            "WhereFrom": "Columbus, Ohio",
+            "WhereTo": "San Francisco, California",
             "DepartureDay": "Friday",
             "ReturningDay": "Sunday",
             "InitialDepartureDate": "11-18-2022",
@@ -37,8 +37,8 @@
             "MaxTripDate": "02-25-2023"
         },
         {
-            "WhereTo": "Columbus, Ohio",
-            "WhereFrom": "Las Angeles, California",
+            "WhereFrom": "Columbus, Ohio",
+            "WhereTo": "Las Angeles, California",
             "DepartureDay": "Friday",
             "ReturningDay": "Sunday",
             "InitialDepartureDate": "11-18-2022",

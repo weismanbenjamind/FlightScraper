@@ -41,16 +41,17 @@ class IWebscraper:
     def _wait_before_execute(func: Callable) -> Callable:
         def wrapper(*args, **kwargs) -> Any:
             time.sleep(IWebscraper._SECONDS_BETWEEN_COMMANDS)
-            func(*args, **kwargs)
-        return wrapper
-
-    def _wait_before_execute_with_return(func: Callable) -> Any:
-        def wrapper(*args, **kwargs) -> Any:
-            time.sleep(IWebscraper._SECONDS_BETWEEN_COMMANDS)
             return func(*args, **kwargs)
         return wrapper
 
+    def _reset(self) -> None:
+        self._where_from = ''
+        self._where_to = ''
+        self._start_date = ''
+        self._end_date = ''
+
     def close(self) -> None:
+        self._reset()
         self._webdriver.close()
 
 if __name__ == '__main__':
