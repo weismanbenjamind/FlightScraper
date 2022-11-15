@@ -1,7 +1,4 @@
 #TODO:
-    # Create time manager to allow for scrapes to always take place at certain times of day
-        # Needs some kind error bounds
-        # +/- 5 minutes of desired scrape time
     # See why long term trips are failing
         # LA flights currently fail - For some reason not entering Las Angeles
     # Clean code
@@ -17,7 +14,6 @@ from Library.IO.Appsettings import Appsettings
 from Library.IO.UserInputs import UserInputs
 from Library.Factories.WebscraperFactory import WebscraperFactory
 from Library.Managers.WebscrapeManager import WebscrapeManager
-from Library.Managers.TimeManager import TimeManager
 from Library.IO import IOUtilities
 import argparse
 
@@ -64,7 +60,7 @@ def main():
         raise Exception('Error creating user inputs') from ex
 
     # Instantiate webscrapers
-    print('Instantiating webscraper')
+    print('Instantiating webscrapers')
     try:
         web_scraper_factory = WebscraperFactory(appsettings.path_to_chromedriver)
         webscrapers = web_scraper_factory.create_webscrapers(appsettings.search_engine_settings)
