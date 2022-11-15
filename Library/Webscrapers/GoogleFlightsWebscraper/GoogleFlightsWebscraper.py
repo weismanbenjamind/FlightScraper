@@ -49,7 +49,7 @@ class GoogleFlightsWebscraper(IWebscraper):
             XPaths.WHERE_TO_INPUT_BOX_AFTER_INPUT_XPATH, self._where_to
         )
 
-    @wait_before_execute()
+    @wait_before_execute(wait_time_seconds = 0.75)
     def _input_departure_date(self) -> None:
         date_box = self._find_element_by_xpath_with_wait(XPaths.DEPARTURE_DATE_INPUT_BOX_PRE_INPUT_XPATH)
         date_box.click()
@@ -78,7 +78,7 @@ class GoogleFlightsWebscraper(IWebscraper):
     def _click_search(self) -> None:
         self._find_element_by_xpath_and_click(XPaths.SEARCH_BUTTON_XPATH)
 
-    @wait_before_execute()
+    @wait_before_execute(wait_time_seconds = 0.25)
     def _click_more_flights(self) -> None:
         max_more_flights_list_elements = 20
         for i in range(1, max_more_flights_list_elements):
