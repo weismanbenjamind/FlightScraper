@@ -2,7 +2,6 @@
     # See why long term trips are failing
         # LA flights currently fail - For some reason not entering Las Angeles
     # Add better waits
-    # Allow for not being able to find more flights button to pass and still get best flights
     # Add logging
     # Combine exceptions with logging to keep app going upon erroring out
     # Find way to notify self of results
