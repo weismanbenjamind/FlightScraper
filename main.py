@@ -1,7 +1,8 @@
 #TODO:
     # See why long term trips are failing
         # LA flights currently fail - For some reason not entering Las Angeles
-    # Clean code - pick up with Validators
+    # Add better waits
+    # Allow for not being able to find more flights button to pass and still get best flights
     # Add logging
     # Combine exceptions with logging to keep app going upon erroring out
     # Find way to notify self of results
@@ -13,7 +14,6 @@ from Library.IO.UserInputs import UserInputs
 from Library.Factories.WebscraperFactory import WebscraperFactory
 from Library.Managers.WebscrapeManager import WebscrapeManager
 from Library.IO import IOUtilities
-from Library.Services import DatetimeService
 import argparse
 
 def main():
