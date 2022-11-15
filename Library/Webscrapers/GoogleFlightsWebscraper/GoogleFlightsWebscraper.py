@@ -14,6 +14,7 @@ class GoogleFlightsWebscraper(IWebscraper):
         self._data_parser = GoogleFlightsDataParser()
         self._departure_date_is_set = False
         self._return_date_is_set = False
+        self._found_more_flights_button = False
 
     def scrape(self, **kwargs) -> pd.DataFrame:
         super()._initialize(**kwargs)
@@ -72,7 +73,6 @@ class GoogleFlightsWebscraper(IWebscraper):
         if not self._return_date_is_set:
             raise RuntimeError('Need to call _input_return_date() before _click_done()')
         self._find_element_by_xpath_and_click(XPaths.DONE_X_PATH)
-        self._return_date_is_set = False
 
     @wait_before_execute(IWebscraper._SECONDS_BETWEEN_COMMANDS)
     def _click_search(self) -> None:
@@ -80,32 +80,45 @@ class GoogleFlightsWebscraper(IWebscraper):
 
     @wait_before_execute(IWebscraper._SECONDS_BETWEEN_COMMANDS)
     def _click_more_flights(self) -> None:
-        max_more_flights_list_elements = 100
+        max_more_flights_list_elements = 20
         for i in range(1, max_more_flights_list_elements):
             try:
                 self._find_element_by_xpath_and_click(XPaths.MORE_FLIGHTS_BUTTON_X_PATH_TEMPALTE.format(i))
+                self._found_more_flights_button = True
                 return
             except TimeoutException:
                 pass
-        raise RuntimeError('Could not find more flights button')
 
     @wait_before_execute(IWebscraper._SECONDS_BETWEEN_COMMANDS)
     def _get_flight_data(self) -> pd.DataFrame:
-        best_flights_data_string = ''
-        other_flight_data_string = ''
+        best_flights_data_string = self._try_get_best_flights_data_string()
+        more_flights_data_string = self._try_get_more_flights_data_string()
+        return self._data_parser.parse([best_flights_data_string, more_flights_data_string], self._departure_date, self._return_date)
+
+    def _try_get_flight_data_string(self, x_path: str, flight_type: str) -> str:
         try:
-            best_flights_data_string = self._find_element_by_xpath_with_wait(XPaths.BEST_FLIGHTS_X_PATH).text
-        except Exception as ex:
-            print(f'Could not best flights for {self._where_from}, {self._where_to}, {self._departure_date}, {self._return_date}')
-        try:
-            other_flight_data_string = self._find_element_by_xpath_with_wait(XPaths.MORE_FLIGHTS_X_PATH).text
-        except Exception as ex:
-            print(f'Could not find more flights for {self._where_from}, {self._where_to}, {self._departure_date}, {self._return_date}')
-        return self._data_parser.parse([best_flights_data_string, other_flight_data_string], self._departure_date, self._return_date)
+            return self._find_element_by_xpath_with_wait(x_path).text
+        except Exception:
+            self._print_could_not_find_flights(flight_type)
+            return ''
+
+    def _print_could_not_find_flights(self, flight_type: str) -> None:
+        print(f'Could not {flight_type} flights for {self._where_from}, {self._where_to}, {self._departure_date}, {self._return_date}')
+
+    def _try_get_best_flights_data_string(self) -> str:
+        return self._try_get_flight_data_string(XPaths.BEST_FLIGHTS_X_PATH, 'best')
+
+    def _try_get_more_flights_data_string(self) -> str:
+        flight_type = 'more'
+        if self._found_more_flights_button:
+            return self._try_get_flight_data_string(XPaths.MORE_FLIGHTS_X_PATH, flight_type)
+        self._print_could_not_find_flights(flight_type)
+        return ''
 
     def _reset(self) -> None:
         self._departure_date_is_set = False
         self._return_date_is_set = False
+        self._found_more_flights_button = False
         super()._reset()
 
     def _close(self) -> None:
