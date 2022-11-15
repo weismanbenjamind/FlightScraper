@@ -83,7 +83,7 @@ class GoogleFlightsWebscraper(IWebscraper):
         max_more_flights_list_elements = 20
         for i in range(1, max_more_flights_list_elements):
             try:
-                self._find_element_by_xpath_and_click(XPaths.MORE_FLIGHTS_BUTTON_X_PATH_TEMPALTE.format(i))
+                self._find_element_by_xpath_and_click(XPaths.MORE_FLIGHTS_BUTTON_X_PATH_TEMPALTE.format(i), timeout_time_seconds = 1)
                 self._found_more_flights_button = True
                 return
             except TimeoutException:
