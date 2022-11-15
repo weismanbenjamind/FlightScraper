@@ -9,7 +9,10 @@ class UserInputs:
         except KeyError as ex:
             raise Exception(f'User inputs missing key {ex.args[0]}')
 
-        self.trips = [Trip(trip) for trip in trips]
+        try:
+            self.trips = [Trip(trip) for trip in trips]
+        except Exception as ex:
+            raise Exception('Error initializing trips')
 
 if __name__ == '__main__':
     pass

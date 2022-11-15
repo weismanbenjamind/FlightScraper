@@ -1,4 +1,5 @@
 from Library.IO.SearchEngineSetting import SearchEngineSetting
+from Library.Validators.ChromedriverValidator import ChromedriverValidator
 from typing import Dict, Union, List
 
 class Appsettings():
@@ -10,6 +11,11 @@ class Appsettings():
             self.search_engine_settings = appsettings_dict['SearchEngineSettings']
         except KeyError as ex:
             raise Exception(f'Appsettings missing value for {ex.args[0]}')
+
+        try:
+            ChromedriverValidator().validate(self.path_to_chromedriver)
+        except Exception as ex:
+            raise Exception(f'Invalid path to chromedriver: {self.path_to_chromedriver}') from ex
 
         try:
             self.search_engine_settings = [SearchEngineSetting(setting) for setting in self.search_engine_settings]

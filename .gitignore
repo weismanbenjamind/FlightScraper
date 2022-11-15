@@ -134,3 +134,6 @@ dmypy.json
 # Output
 *flight_data.csv
 *ScrapeResults*
+
+# jupyter notebooks
+*DevNotebook.ipynb

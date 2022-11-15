@@ -20,8 +20,5 @@ class IFileValidator:
     def validate(self) -> None:
         raise NotImplementedError('IValidator.validate() is a virtual method and must be overriden')
 
-    def set_current_file_path(self, filepath: str) -> None:
-        self._current_file_path = filepath
-
 if __name__ == '__main__':
     pass

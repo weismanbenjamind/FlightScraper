@@ -10,7 +10,7 @@ class CommandLineArgsValidator:
         ]
         for key in target_keys:
             try:
-                filepath = getattr(args, key)
+                getattr(args, key)
             except Exception as ex:
                 raise ValueError(f'Expected args to have setting {key}')
 

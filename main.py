@@ -1,9 +1,7 @@
 #TODO:
     # See why long term trips are failing
         # LA flights currently fail - For some reason not entering Las Angeles
-    # Clean code
-    # Add exception handling
-        # Fix hack with more flights currently in place
+    # Clean code - pick up with Validators
     # Add logging
     # Combine exceptions with logging to keep app going upon erroring out
     # Find way to notify self of results
@@ -15,11 +13,13 @@ from Library.IO.UserInputs import UserInputs
 from Library.Factories.WebscraperFactory import WebscraperFactory
 from Library.Managers.WebscrapeManager import WebscrapeManager
 from Library.IO import IOUtilities
+from Library.Services import DatetimeService
 import argparse
 
 def main():
 
     # Parse command line arguments
+    print('Parsing command line arguments')
     try:
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument(
@@ -54,6 +54,7 @@ def main():
         raise Exception('Error creating appsettings') from ex
 
     # Read in user inputs
+    print('Reading in user inputs')
     try:
         user_inputs = UserInputs(json_parser.try_read_json(args.user_inputs))
     except Exception as ex:

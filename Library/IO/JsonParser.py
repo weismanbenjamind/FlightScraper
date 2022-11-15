@@ -22,7 +22,7 @@ class JsonParser(IFileValidator):
         except json.JSONDecodeError as ex:
             raise RuntimeError(f'Syntax error in json file {path_to_json}') from ex
         except Exception as ex:
-            raise RuntimeError(f'Error reading in json file {path_to_json}')
+            raise RuntimeError(f'Error reading in json file {path_to_json}') from ex
 
     def validate(self) -> None:
         raise NotImplementedError('JsonParser does not have an implementation of IValidator.validate()')

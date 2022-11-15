@@ -1,5 +1,6 @@
 
 from Library.DataParsers.Decorators import flight_data_dict_validated
+from Library.Exceptions.EmptyFlightDataStringError import EmptyFlightDataStringError
 from typing import Iterable
 import pandas as pd
 import numpy as np
@@ -35,16 +36,18 @@ class GoogleFlightsDataParser:
         }
 
     def parse(self, flight_data_strings: Iterable[str], departure_date: str, return_date: str) -> pd.DataFrame:
-        self._initialize(flight_data_strings, departure_date, return_date)
+        try:
+            self._initialize(flight_data_strings, departure_date, return_date)
+        except EmptyFlightDataStringError:
+            self._set_flight_data_dict_for_no_flight_data()
+            return self._reset_and_get_flight_dataframe()
         self._get_deparute_and_landing_times()
         self._get_flight_lengths()
         self._get_airports()
         self._get_num_stops()
         self._get_prices()
         self._set_depart_and_return_dates()
-        flight_df = pd.DataFrame(self._flight_data_dict)
-        self._reset()
-        return flight_df
+        return self._reset_and_get_flight_dataframe()
 
     @flight_data_dict_validated
     def _get_flight_lengths(self) -> None:
@@ -130,11 +133,22 @@ class GoogleFlightsDataParser:
                     self._append_to_flight_data_dict(field, datapoint)
                     break
 
-    def _initialize(self, flight_data_strings: Iterable[str], departure_date: str, return_date: str):
+    def _initialize(self, flight_data_strings: Iterable[str], departure_date: str, return_date: str) -> None:
         self._flight_data_string = self._delimiter.join(flight_data_strings)
+        if not self._flight_data_string:
+            raise EmptyFlightDataStringError()
         self._flight_data_split = self._flight_data_string.split(self._delimiter)
         self._departure_date = departure_date
         self._return_date = return_date
+
+    @flight_data_dict_validated
+    def _set_flight_data_dict_for_no_flight_data(self) -> None:
+        self._flight_data_dict[self._DEPARTURE_DATE] = self._DEPARTURE_DATE
+        self._flight_data_dict[self._RETURN_DATE] = self._RETURN_DATE
+        target_keys = {self._RETURN_DATE, self._DEPARTURE_DATE}
+        for key in self._flight_data_dict:
+            if key not in target_keys:
+                self._flight_data_dict[key] = np.NaN
     
     def _reset(self):
         self._flight_data_string = ''
@@ -151,6 +165,11 @@ class GoogleFlightsDataParser:
             self._NUM_STOPS: [],
             self._PRICE_USD: [],
         }
+
+    def _reset_and_get_flight_dataframe(self) -> pd.DataFrame:
+        flight_df = pd.DataFrame(self._flight_data_dict)
+        self._reset()
+        return flight_df
 
 if __name__ == '__main__':
     pass
