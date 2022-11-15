@@ -1,7 +1,7 @@
 #TODO:
     # See why long term trips are failing
         # LA flights currently fail - For some reason not entering Las Angeles
-    # Clean code
+    # Clean code - pick up with Validators
     # Add way for data parser to handle empty data string
     # Add exception handling
         # Fix hack with more flights currently in place
