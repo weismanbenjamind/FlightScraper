@@ -1,9 +1,10 @@
-from Library.Validators.ChromedriverValidator import ChromedriverValidator
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from typing import Any, Callable
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+from typing import Any
 import time
 
 class IWebscraper:
@@ -11,7 +12,6 @@ class IWebscraper:
     _TIMEOUT_TIME_SECONDS = 1
 
     def __init__(self, base_url: str, path_to_chromedriver: str) -> None:
-        ChromedriverValidator().validate(path_to_chromedriver)
         self._path_to_chromedriver = path_to_chromedriver
         self._base_url = base_url
         self._webdriver = None
@@ -38,11 +38,8 @@ class IWebscraper:
     def _find_element_by_xpath_and_click(self, x_path: str, wait_time_seconds = _TIMEOUT_TIME_SECONDS) -> None:
         WebDriverWait(self._webdriver, wait_time_seconds).until(EC.element_to_be_clickable((By.XPATH, x_path))).click()
 
-    def _wait_before_execute(func: Callable) -> Callable:
-        def wrapper(*args, **kwargs) -> Any:
-            time.sleep(IWebscraper._SECONDS_BETWEEN_COMMANDS)
-            return func(*args, **kwargs)
-        return wrapper
+    def _select_all_in_input_box(self) -> None:
+        ActionChains(self._webdriver).key_down(Keys.COMMAND).send_keys('a').key_up(Keys.COMMAND).perform()
 
     def _reset(self) -> None:
         self._where_from = ''

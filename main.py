@@ -2,6 +2,7 @@
     # See why long term trips are failing
         # LA flights currently fail - For some reason not entering Las Angeles
     # Clean code
+    # Add way for data parser to handle empty data string
     # Add exception handling
         # Fix hack with more flights currently in place
     # Add logging
@@ -20,6 +21,7 @@ import argparse
 def main():
 
     # Parse command line arguments
+    print('Parsing command line arguments')
     try:
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument(
