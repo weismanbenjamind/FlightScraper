@@ -49,7 +49,7 @@ class GoogleFlightsWebscraper(IWebscraper):
             XPaths.WHERE_TO_INPUT_BOX_AFTER_INPUT_XPATH, self._where_to
         )
 
-    @wait_before_execute(IWebscraper._SECONDS_BETWEEN_COMMANDS)
+    @wait_before_execute(wait_time_seconds = 0.75)
     def _input_departure_date(self) -> None:
         date_box = self._find_element_by_xpath_with_wait(XPaths.DEPARTURE_DATE_INPUT_BOX_PRE_INPUT_XPATH)
         date_box.click()
@@ -74,22 +74,22 @@ class GoogleFlightsWebscraper(IWebscraper):
             raise RuntimeError('Need to call _input_return_date() before _click_done()')
         self._find_element_by_xpath_and_click(XPaths.DONE_X_PATH)
 
-    @wait_before_execute(IWebscraper._SECONDS_BETWEEN_COMMANDS)
+    @wait_before_execute()
     def _click_search(self) -> None:
         self._find_element_by_xpath_and_click(XPaths.SEARCH_BUTTON_XPATH)
 
-    @wait_before_execute(IWebscraper._SECONDS_BETWEEN_COMMANDS)
+    @wait_before_execute(wait_time_seconds = 0.25)
     def _click_more_flights(self) -> None:
         max_more_flights_list_elements = 20
         for i in range(1, max_more_flights_list_elements):
             try:
-                self._find_element_by_xpath_and_click(XPaths.MORE_FLIGHTS_BUTTON_X_PATH_TEMPALTE.format(i))
+                self._find_element_by_xpath_and_click(XPaths.MORE_FLIGHTS_BUTTON_X_PATH_TEMPALTE.format(i), timeout_time_seconds = 1)
                 self._found_more_flights_button = True
                 return
             except TimeoutException:
                 pass
 
-    @wait_before_execute(IWebscraper._SECONDS_BETWEEN_COMMANDS)
+    @wait_before_execute(wait_time_seconds = 2)
     def _get_flight_data(self) -> pd.DataFrame:
         best_flights_data_string = self._try_get_best_flights_data_string()
         more_flights_data_string = self._try_get_more_flights_data_string()
@@ -103,7 +103,7 @@ class GoogleFlightsWebscraper(IWebscraper):
             return ''
 
     def _print_could_not_find_flights(self, flight_type: str) -> None:
-        print(f'Could not {flight_type} flights for {self._where_from}, {self._where_to}, {self._departure_date}, {self._return_date}')
+        print(f'Could not find {flight_type} flights for {self._where_from}, {self._where_to}, {self._departure_date}, {self._return_date}')
 
     def _try_get_best_flights_data_string(self) -> str:
         return self._try_get_flight_data_string(XPaths.BEST_FLIGHTS_X_PATH, 'best')

@@ -1,9 +1,9 @@
 #TODO:
     # See why long term trips are failing
         # LA flights currently fail - For some reason not entering Las Angeles
-    # Add better waits
+    # Figure out why sometimes can't find more flights
+    # Multithread such that trips get searched for at the same time
     # Add logging
-    # Combine exceptions with logging to keep app going upon erroring out
     # Find way to notify self of results
 
 from Library.Validators.CommandLineArgsValidator import CommandLineArgsValidator

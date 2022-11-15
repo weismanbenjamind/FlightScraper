@@ -1,7 +1,7 @@
 from typing import Callable
 import time
 
-def wait_before_execute(wait_time_seconds: str) -> Callable:
+def wait_before_execute(wait_time_seconds: float = 1) -> Callable:
     def decorator(func: Callable):
         def wrapper(*args, **kwargs):
             time.sleep(wait_time_seconds)
