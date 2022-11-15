@@ -7,7 +7,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 from typing import Any
 
 class IWebscraper:
-    _SECONDS_BETWEEN_COMMANDS = 5
     _TIMEOUT_TIME_SECONDS = 1
 
     def __init__(self, base_url: str, path_to_chromedriver: str) -> None:
