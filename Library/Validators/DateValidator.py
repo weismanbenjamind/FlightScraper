@@ -1,10 +1,10 @@
-from Library.Services.DatetimeService import DatetimeService
+from Library.Services import DatetimeService
 from datetime import datetime
 
 class DateValidator:
+    _DELIMITER = '-'
 
     def __init__(self) -> None:
-        self._delimiter = '-'
         self._current_date = ''
         self._current_day_of_week = ''
 
@@ -19,15 +19,15 @@ class DateValidator:
         self._current_day_of_week = ''
 
     def _validate_delimter_present(self) -> None:
-        if self._delimiter not in self._current_date:
-            raise ValueError(f'Expected {self._delimiter} to be in date: {self._current_date}')
+        if self._DELIMITER not in self._current_date:
+            raise ValueError(f'Expected {self._DELIMITER} to be in date: {self._current_date}')
     
     def _validate_date_format(self) -> None:
-        actual_split = self._current_date.split(self._delimiter)
+        actual_split = self._current_date.split(self._DELIMITER)
         target_split = ['MM', 'DD', 'YYYY']
         for actual_chars, target_chars_format in zip(actual_split, target_split):
             if len(actual_chars) != len(target_chars_format):
-                target_format = self._delimiter.join(target_split)
+                target_format = self._DELIMITER.join(target_split)
                 raise ValueError(f'Expected date {self._current_date} to have format {target_format}')
 
     def _validate_day_of_week(self) -> None:

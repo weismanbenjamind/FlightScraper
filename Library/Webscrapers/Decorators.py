@@ -1,4 +1,3 @@
-from Library.Webscrapers.IWebscraper import IWebscraper
 from typing import Callable
 import time
 

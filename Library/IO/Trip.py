@@ -1,5 +1,5 @@
 from Library.Validators.DateValidator import DateValidator
-from Library.Services.DatetimeService import DatetimeService
+from Library.Services import DatetimeService
 from Library.Exceptions.MaxTripDateError import MaxTripDateError
 from typing import Dict, Union
 from datetime import datetime
@@ -41,7 +41,10 @@ class Trip:
 
     def _validate_date_less_than_max_date(self, date: datetime) -> None:
         if date > self._max_trip_date:
-            raise MaxTripDateError(DatetimeService.datetime_to_mm_dd_yyyy(date), DatetimeService.datetime_to_mm_dd_yyyy(self._max_trip_date))
+            raise MaxTripDateError(
+                DatetimeService.datetime_to_mm_dd_yyyy(date), 
+                DatetimeService.datetime_to_mm_dd_yyyy(self._max_trip_date)
+            )
 
     def get_search_settings(self) -> Dict[str, str]:
         return {

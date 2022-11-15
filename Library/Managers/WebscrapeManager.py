@@ -25,7 +25,7 @@ class WebscrapeManager:
                         flight_data = pd.concat([flight_data, webscraper.scrape(**trip.get_search_settings())])
                     except Exception as ex:
                         trip_info = ', '.join([f'{key}: {value}' for key, value in trip.get_search_settings().items()])
-                        print(f'Error with trip {trip_info}\n{ex}\n')
+                        print(f'\nError with trip {trip_info}\n{ex}\n')
                     try:
                         trip.try_update()
                     except MaxTripDateError:

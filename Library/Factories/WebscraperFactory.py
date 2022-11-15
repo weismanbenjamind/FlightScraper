@@ -24,7 +24,10 @@ class WebscraperFactory:
             raise Exception(f'Error instantiating webscraper {webscraper_name}') from ex
 
     def create_webscrapers(self, search_engine_settings: Iterable[SearchEngineSetting]) -> List[IWebscraper]:
-        return [self._create_webscraper(search_engine_setting.name, search_engine_setting.base_url) for search_engine_setting in search_engine_settings]
+        return [
+            self._create_webscraper(search_engine_setting.name, search_engine_setting.base_url) 
+            for search_engine_setting in search_engine_settings
+        ]
 
 if __name__ == '__main__':
     pass

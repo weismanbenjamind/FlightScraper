@@ -5,7 +5,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from typing import Any
-import time
 
 class IWebscraper:
     _SECONDS_BETWEEN_COMMANDS = 5
@@ -23,7 +22,7 @@ class IWebscraper:
     def initialize_webdriver(self) -> None:
         self._webdriver = webdriver.Chrome(executable_path = self._path_to_chromedriver)
 
-    def scrape(self, **kwargs) -> None:
+    def _initialize(self, **kwargs) -> None:
         try:
             self._where_from = kwargs['where_from']
             self._where_to = kwargs['where_to']
@@ -32,11 +31,14 @@ class IWebscraper:
         except KeyError as ex:
             raise Exception(f'Webscraper.scrape() needs kwarg {ex.args[0]}')
 
-    def _find_element_by_xpath_with_wait(self, x_path: str, wait_time_seconds = _TIMEOUT_TIME_SECONDS) -> Any:
-        return WebDriverWait(self._webdriver, wait_time_seconds).until(lambda x: x.find_element(By.XPATH, x_path))
+    def scrape(self, **kwargs) -> None:
+        raise NotImplementedError('IWebscraper.scrape() is a virtual method and needs to be overridden')
 
-    def _find_element_by_xpath_and_click(self, x_path: str, wait_time_seconds = _TIMEOUT_TIME_SECONDS) -> None:
-        WebDriverWait(self._webdriver, wait_time_seconds).until(EC.element_to_be_clickable((By.XPATH, x_path))).click()
+    def _find_element_by_xpath_with_wait(self, x_path: str, timeout_time_seconds: float = _TIMEOUT_TIME_SECONDS) -> Any:
+        return WebDriverWait(self._webdriver, timeout_time_seconds).until(EC.presence_of_element_located((By.XPATH, x_path)))
+
+    def _find_element_by_xpath_and_click(self, x_path: str, timeout_time_seconds: float = _TIMEOUT_TIME_SECONDS) -> None:
+        WebDriverWait(self._webdriver, timeout_time_seconds).until(EC.element_to_be_clickable((By.XPATH, x_path))).click()
 
     def _select_all_in_input_box(self) -> None:
         ActionChains(self._webdriver).key_down(Keys.COMMAND).send_keys('a').key_up(Keys.COMMAND).perform()

@@ -16,7 +16,7 @@ class GoogleFlightsWebscraper(IWebscraper):
         self._return_date_is_set = False
 
     def scrape(self, **kwargs) -> pd.DataFrame:
-        super().scrape(**kwargs)
+        super()._initialize(**kwargs)
         self._webdriver.get(self._base_url)
         self._input_where_from()
         self._input_where_to()

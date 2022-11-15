@@ -15,7 +15,7 @@ class Appsettings():
         try:
             ChromedriverValidator().validate(self.path_to_chromedriver)
         except Exception as ex:
-            Exception(f'Invalid path to chromedriver: {self.path_to_chromedriver}')
+            raise Exception(f'Invalid path to chromedriver: {self.path_to_chromedriver}') from ex
 
         try:
             self.search_engine_settings = [SearchEngineSetting(setting) for setting in self.search_engine_settings]
