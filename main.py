@@ -6,6 +6,7 @@
         # LA flights currently fail - For some reason not entering Las Angeles
     # Find way to notify self of results
 
+from Library.Factories.LoggerFactory import LoggerFactory
 from Library.Validators.CommandLineArgsValidator import CommandLineArgsValidator
 from Library.IO.JsonParser import JsonParser
 from Library.IO.Appsettings import Appsettings
@@ -14,11 +15,29 @@ from Library.Factories.WebscraperFactory import WebscraperFactory
 from Library.Managers.WebscrapeManager import WebscrapeManager
 from Library.IO import IOUtilities
 import argparse
+import logging
 
 def main():
 
-    # Parse command line arguments
-    print('Parsing command line arguments')
+    logging.debug('Setting logger settings')
+    try:
+        LoggerFactory().set_logging_settings()
+    except Exception:
+        logging.exception('Failed to set logger settings')
+        logging.critical('Exiting program')
+        exit()
+
+    logging.debug(f'Setting logger in {__name__}')
+    try:
+        logger = LoggerFactory.try_create_logger(__name__)
+    except Exception:
+        logging.exception('Error creating logger in main.py')
+        logging.critical('Exiting program')
+        exit()
+
+    logger.info('Initializing settings for webscraping')
+
+    logger.debug('Parsing command line arguments')
     try:
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument(
@@ -34,41 +53,51 @@ def main():
             help = 'Path to appsettings'
         )
         args = arg_parser.parse_args()
-    except Exception as ex:
-        raise Exception('Error parsing command line arguments') from ex
+    except Exception:
+        logger.exception('Error parsing command line arguments')
+        logger.critical('Exiting program')
+        exit()
 
     # Validate command line arguments
-    print('Validating command line arguments')
+    logger.debug('Validating command line arguments')
     try:
         CommandLineArgsValidator.validate(args)
-    except Exception as ex:
-        raise Exception('Invalid command line arguments') from ex
+    except Exception:
+        logger.exception('Invalid command line arguments')
+        logger.critical('Exiting program')
+        exit()
 
     # Read in appsettings
-    print('Reading in appsettings')
+    logger.debug('Reading in appsettings')
     json_parser = JsonParser()
     try:
         appsettings = Appsettings(json_parser.try_read_json(args.appsettings))
-    except Exception as ex:
-        raise Exception('Error creating appsettings') from ex
+    except Exception:
+        logger.exception('Error creating appsettings')
+        logger.critical('Exiting program')
+        exit()
 
     # Read in user inputs
-    print('Reading in user inputs')
+    logger.debug('Reading in user inputs')
     try:
         user_inputs = UserInputs(json_parser.try_read_json(args.user_inputs))
-    except Exception as ex:
-        raise Exception('Error creating user inputs') from ex
+    except Exception:
+        logger.exception('Error creating user inputs')
+        logger.critical('Exiting program')
+        exit()
 
     # Instantiate webscrapers
-    print('Instantiating webscrapers')
+    logger.debug('Instantiating webscrapers')
     try:
         web_scraper_factory = WebscraperFactory(appsettings.path_to_chromedriver)
         webscrapers = web_scraper_factory.create_webscrapers(appsettings.search_engine_settings)
         webscrape_manager = WebscrapeManager(webscrapers, user_inputs.trips, appsettings.hours_between_scrapes)
-    except Exception as ex:
-        raise Exception('Error creating webscrapers') from ex
+    except Exception:
+        logger.exception('Error creating webscrapers')
+        logger.critical('Exiting program')
 
     # Cleanup objects that are no longer needed
+    logger.debug('Cleaning up unused objects')
     del arg_parser
     del args
     del json_parser
@@ -79,9 +108,9 @@ def main():
 
     # Scrape
     while True:
-        print('Scraping')
+        logger.info('Scraping')
         webscrape_manager.scrape().to_csv(IOUtilities.get_scrape_output_file_name(), index = False)
-        print('Sleeping')
+        logger.info('Sleeping')
         webscrape_manager.sleep()
 
 if __name__ == '__main__':
