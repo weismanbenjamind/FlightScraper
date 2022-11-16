@@ -1,10 +1,9 @@
 #TODO:
+    # Add better exception handling
+    # Add logging
+    # Multithread such that trips get searched for at the same time
     # See why long term trips are failing
         # LA flights currently fail - For some reason not entering Las Angeles
-    # Figure out why sometimes can't find more flights
-        # Add in a retry decorator to retry if we fail to find more flights or best flights
-    # Multithread such that trips get searched for at the same time
-    # Add logging
     # Find way to notify self of results
 
 from Library.Validators.CommandLineArgsValidator import CommandLineArgsValidator
