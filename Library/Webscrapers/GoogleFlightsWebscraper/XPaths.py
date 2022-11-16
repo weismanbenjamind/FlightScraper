@@ -8,7 +8,6 @@ DEPARTURE_DATE_INPUT_BOX_PRE_INPUT_XPATH = '/html/body/c-wiz[2]/div/div[2]/c-wiz
 DEPARTURE_DATE_INPUT_BOX_AFTER_INPUT_XPATH = '/html/body/c-wiz[2]/div/div[2]/c-wiz/div[1]/c-wiz/div[2]/div[1]/div[1]/div[1]/div/div[2]/div[2]/div/div/div[2]/div/div[2]/div[1]/div[1]/div[1]/div/input'
 RETURN_DATE_INPUT_BOX_PRE_INPUT_XPATH = '/html/body/c-wiz[2]/div/div[2]/c-wiz/div[1]/c-wiz/div[2]/div[1]/div[1]/div[1]/div/div[2]/div[2]/div/div/div[2]/div/div[2]/div[1]/div[1]/div[2]/div/input'
 
-SEARCH_BUTTON_XPATH = '/html/body/c-wiz[2]/div/div[2]/c-wiz/div[1]/c-wiz/div[2]/div[1]/div[1]/div[2]/div/button'
 MORE_FLIGHTS_BUTTON_X_PATH_TEMPALTE = '/html/body/c-wiz[2]/div/div[2]/c-wiz/div[1]/c-wiz/div[2]/div[2]/div[5]/ul/li[{}]/div/span[1]/div/button'
 
 BEST_FLIGHTS_X_PATH = '/html/body/c-wiz[2]/div/div[2]/c-wiz/div[1]/c-wiz/div[2]/div[2]/div[3]/ul'
