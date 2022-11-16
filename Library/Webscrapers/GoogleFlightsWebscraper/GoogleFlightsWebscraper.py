@@ -1,10 +1,10 @@
 from Library.Webscrapers.IWebscraper import IWebscraper
-from Library.Webscrapers.Decorators import wait_before_execute
+from Library.Webscrapers.Decorators import wait_before_execute, retry_if_exception_raised
 from Library.Webscrapers.GoogleFlightsWebscraper import XPaths
 from Library.DataParsers.GoogleFlightsDataParser import GoogleFlightsDataParser
+from Library.Exceptions.HTMLNotFoundError import HTMLNotFoundError
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import TimeoutException, ElementNotInteractableException
 import pandas as pd
 
 class GoogleFlightsWebscraper(IWebscraper):
@@ -37,18 +37,21 @@ class GoogleFlightsWebscraper(IWebscraper):
         text_box.send_keys(input_text[1:])
         text_box.send_keys(Keys.RETURN)
 
+    @retry_if_exception_raised((TimeoutException, ElementNotInteractableException))
     def _input_where_from(self) -> None:
         self._input_to_text_box_with_update(
             XPaths.WHERE_FROM_INPUT_BOX_PRE_INPUT_XPATH, 
             XPaths.WHERE_FROM_INPUT_BOX_AFTER_INPUT_XPATH, self._where_from
         )
 
+    @retry_if_exception_raised((TimeoutException, ElementNotInteractableException))
     def _input_where_to(self) -> None:
         self._input_to_text_box_with_update(
             XPaths.WHERE_TO_INPUT_BOX_PRE_INPUT_XPATH, 
             XPaths.WHERE_TO_INPUT_BOX_AFTER_INPUT_XPATH, self._where_to
         )
 
+    @retry_if_exception_raised((TimeoutException, ElementNotInteractableException))
     @wait_before_execute(wait_time_seconds = 0.75)
     def _input_departure_date(self) -> None:
         date_box = self._find_element_by_xpath_with_wait(XPaths.DEPARTURE_DATE_INPUT_BOX_PRE_INPUT_XPATH)
@@ -59,6 +62,7 @@ class GoogleFlightsWebscraper(IWebscraper):
         date_box.send_keys(self._departure_date)
         self._departure_date_is_set = True
 
+    @retry_if_exception_raised((TimeoutException, ElementNotInteractableException))
     def _input_return_date(self) -> None:
         if not self._input_departure_date:
             raise RuntimeError('Need to call _input_departure_date() before _input_return_date()')
@@ -69,15 +73,13 @@ class GoogleFlightsWebscraper(IWebscraper):
         date_box.send_keys(self._return_date)
         self._return_date_is_set = True
 
+    @retry_if_exception_raised((TimeoutException, ElementNotInteractableException))
     def _click_done(self) -> None:
         if not self._return_date_is_set:
             raise RuntimeError('Need to call _input_return_date() before _click_done()')
         self._find_element_by_xpath_and_click(XPaths.DONE_X_PATH)
 
-    @wait_before_execute()
-    def _click_search(self) -> None:
-        self._find_element_by_xpath_and_click(XPaths.SEARCH_BUTTON_XPATH)
-
+    @retry_if_exception_raised((TimeoutException, ElementNotInteractableException, HTMLNotFoundError))
     @wait_before_execute(wait_time_seconds = 0.25)
     def _click_more_flights(self) -> None:
         max_more_flights_list_elements = 20
@@ -87,8 +89,10 @@ class GoogleFlightsWebscraper(IWebscraper):
                 self._found_more_flights_button = True
                 return
             except TimeoutException:
-                pass
+                continue
+        raise HTMLNotFoundError('more flights')
 
+    @retry_if_exception_raised((TimeoutException, ElementNotInteractableException))
     @wait_before_execute(wait_time_seconds = 2)
     def _get_flight_data(self) -> pd.DataFrame:
         best_flights_data_string = self._try_get_best_flights_data_string()

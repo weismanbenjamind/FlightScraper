@@ -137,3 +137,6 @@ dmypy.json
 
 # jupyter notebooks
 *DevNotebook.ipynb
+
+# vscode extensions
+*.vscode
