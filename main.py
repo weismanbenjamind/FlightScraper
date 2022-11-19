@@ -98,7 +98,7 @@ def main():
 
     # Scrape
     while True:
-        logger.info('Scraping')
+        logger.info('Starting Scrape')
         try:
             webscrape_manager.scrape().to_csv(IOUtilities.get_scrape_output_file_name(), index = False)
         except Exception:

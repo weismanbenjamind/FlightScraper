@@ -20,7 +20,6 @@ class WebscrapeManager:
 
     def scrape(self) -> pd.DataFrame:
         flight_data = pd.DataFrame()
-        self._logger.info('Starting scrape')
         for webscraper in self._webscrapers:
             webscraper.initialize_webdriver()
             for trip in self._trips:

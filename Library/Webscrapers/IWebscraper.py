@@ -6,6 +6,13 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from typing import Any
 
+# Stop selenium from logging
+import logging
+from selenium.webdriver.remote.remote_connection import LOGGER as selenium_logger
+from urllib3.connectionpool import log as url_lib_logger
+selenium_logger.setLevel(logging.WARNING)
+url_lib_logger.setLevel(logging.WARNING)
+
 class IWebscraper:
     _TIMEOUT_TIME_SECONDS = 10
 
