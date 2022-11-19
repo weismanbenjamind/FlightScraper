@@ -1,3 +1,4 @@
+from Factories.LoggerFactory import LoggerFactory
 from Library.Webscrapers.IWebscraper import IWebscraper
 from Library.Webscrapers.Decorators import wait_before_execute, retry_if_exception_raised
 from Library.Webscrapers.GoogleFlightsWebscraper import XPaths
@@ -15,6 +16,7 @@ class GoogleFlightsWebscraper(IWebscraper):
         self._departure_date_is_set = False
         self._return_date_is_set = False
         self._found_more_flights_button = False
+        self._logger = LoggerFactory.try_create_logger(__name__)
 
     def scrape(self, **kwargs) -> pd.DataFrame:
         super()._initialize(**kwargs)
@@ -103,11 +105,14 @@ class GoogleFlightsWebscraper(IWebscraper):
         try:
             return self._find_element_by_xpath_with_wait(x_path).text
         except Exception:
-            self._print_could_not_find_flights(flight_type)
+            self._log_could_not_find_more_flights(flight_type)
             return ''
 
-    def _print_could_not_find_flights(self, flight_type: str) -> None:
-        print(f'Could not find {flight_type} flights for {self._where_from}, {self._where_to}, {self._departure_date}, {self._return_date}')
+    def _log_could_not_find_more_flights(self, flight_type: str) -> None:
+        self._logger.warning(
+            f'Could not find {flight_type} flights for '
+            f'{self._where_from}, {self._where_to}, {self._departure_date}, {self._return_date}'
+        )
 
     def _try_get_best_flights_data_string(self) -> str:
         return self._try_get_flight_data_string(XPaths.BEST_FLIGHTS_X_PATH, 'best')
@@ -116,7 +121,7 @@ class GoogleFlightsWebscraper(IWebscraper):
         flight_type = 'more'
         if self._found_more_flights_button:
             return self._try_get_flight_data_string(XPaths.MORE_FLIGHTS_X_PATH, flight_type)
-        self._print_could_not_find_flights(flight_type)
+        self._log_could_not_find_more_flights(flight_type)
         return ''
 
     def _reset(self) -> None:

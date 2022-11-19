@@ -1,11 +1,10 @@
+from Library.Factories.LoggerFactory import LoggerFactory
 from Library.Webscrapers.IWebscraper import IWebscraper
 from Library.IO.Trip import Trip
 from Library.Exceptions.MaxTripDateError import MaxTripDateError
 import pandas as pd
 from typing import Iterable
 import time
-
-from Library.Factories.LoggerFactory import LoggerFactory
 
 class WebscrapeManager:
 

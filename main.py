@@ -1,7 +1,10 @@
 #TODO:
     # Add better exception handling
     # Add logging
-        # Get selenium to stop logging
+        # Look into logging with retry functions
+            # Make sure only log when retry occurs
+    # Update trip such that user can't scrape for a past date
+    # Add functionality such that you can only grab best trips recommended by google flights
     # Multithread such that trips get searched for at the same time
     # See why long term trips are failing
         # LA flights currently fail - For some reason not entering Las Angeles
@@ -64,7 +67,13 @@ def main():
         logger.critical('Exiting program')
         exit()
 
-    json_parser = JsonParser()
+    try:
+        json_parser = JsonParser()
+    except Exception:
+        logger.exception('Error creating JsonParser')
+        logger.critical('Exiting program')
+        exit()
+
     try:
         appsettings = Appsettings(json_parser.try_read_json(args.appsettings))
     except Exception:
@@ -84,21 +93,26 @@ def main():
         webscrapers = web_scraper_factory.create_webscrapers(appsettings.search_engine_settings)
         webscrape_manager = WebscrapeManager(webscrapers, user_inputs.trips, appsettings.hours_between_scrapes)
     except Exception:
-        logger.exception('Error creating webscrapers')
+        logger.exception('Error creating webscrape manager')
         logger.critical('Exiting program')
         exit()
 
-    del arg_parser
-    del args
-    del json_parser
-    del user_inputs
-    del appsettings
-    del web_scraper_factory
-    del webscrapers
+    try:
+        del arg_parser
+        del args
+        del json_parser
+        del user_inputs
+        del appsettings
+        del web_scraper_factory
+        del webscrapers
+    except Exception:
+        logger.exception('Error deleting stale objects')
+        logger.critical('Exiting program')
+        exit()
 
     # Scrape
     while True:
-        logger.info('Starting Scrape')
+        logger.info('Starting scrape')
         try:
             webscrape_manager.scrape().to_csv(IOUtilities.get_scrape_output_file_name(), index = False)
         except Exception:
