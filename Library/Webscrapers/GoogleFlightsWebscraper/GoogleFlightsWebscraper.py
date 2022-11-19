@@ -1,4 +1,4 @@
-from Factories.LoggerFactory import LoggerFactory
+from Library.Factories.LoggerFactory import LoggerFactory
 from Library.Webscrapers.IWebscraper import IWebscraper
 from Library.Webscrapers.Decorators import wait_before_execute, retry_if_exception_raised
 from Library.Webscrapers.GoogleFlightsWebscraper import XPaths
