@@ -1,6 +1,7 @@
 #TODO:
     # Add better exception handling
     # Add logging
+        # Get selenium to stop logging
     # Multithread such that trips get searched for at the same time
     # See why long term trips are failing
         # LA flights currently fail - For some reason not entering Las Angeles
@@ -27,17 +28,15 @@ def main():
         logging.critical('Exiting program')
         exit()
 
-    logging.debug(f'Setting logger in {__name__}')
     try:
         logger = LoggerFactory.try_create_logger(__name__)
     except Exception:
-        logging.exception('Error creating logger in main.py')
+        logging.exception(f'Error creating logger in {__name__}')
         logging.critical('Exiting program')
         exit()
 
     logger.info('Initializing settings for webscraping')
 
-    logger.debug('Parsing command line arguments')
     try:
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument(
@@ -58,8 +57,6 @@ def main():
         logger.critical('Exiting program')
         exit()
 
-    # Validate command line arguments
-    logger.debug('Validating command line arguments')
     try:
         CommandLineArgsValidator.validate(args)
     except Exception:
@@ -67,8 +64,6 @@ def main():
         logger.critical('Exiting program')
         exit()
 
-    # Read in appsettings
-    logger.debug('Reading in appsettings')
     json_parser = JsonParser()
     try:
         appsettings = Appsettings(json_parser.try_read_json(args.appsettings))
@@ -77,8 +72,6 @@ def main():
         logger.critical('Exiting program')
         exit()
 
-    # Read in user inputs
-    logger.debug('Reading in user inputs')
     try:
         user_inputs = UserInputs(json_parser.try_read_json(args.user_inputs))
     except Exception:
@@ -86,8 +79,6 @@ def main():
         logger.critical('Exiting program')
         exit()
 
-    # Instantiate webscrapers
-    logger.debug('Instantiating webscrapers')
     try:
         web_scraper_factory = WebscraperFactory(appsettings.path_to_chromedriver)
         webscrapers = web_scraper_factory.create_webscrapers(appsettings.search_engine_settings)
@@ -95,9 +86,8 @@ def main():
     except Exception:
         logger.exception('Error creating webscrapers')
         logger.critical('Exiting program')
+        exit()
 
-    # Cleanup objects that are no longer needed
-    logger.debug('Cleaning up unused objects')
     del arg_parser
     del args
     del json_parser
@@ -109,7 +99,10 @@ def main():
     # Scrape
     while True:
         logger.info('Scraping')
-        webscrape_manager.scrape().to_csv(IOUtilities.get_scrape_output_file_name(), index = False)
+        try:
+            webscrape_manager.scrape().to_csv(IOUtilities.get_scrape_output_file_name(), index = False)
+        except Exception:
+            logger.exception('Failed webscrape')
         logger.info('Sleeping')
         webscrape_manager.sleep()
 

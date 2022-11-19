@@ -24,7 +24,7 @@ class LoggerFactory:
         try:
             os.makedirs(self._log_file_parent_dir)
         except FileExistsError:
-            logging.debug('Log file directory already exists')
+            pass
 
     def _get_log_file_path(self) -> str:
         return os.path.sep.join(
