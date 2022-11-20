@@ -108,14 +108,17 @@ def main():
 
     # Scrape
     while True:
-        logger.info('Starting scrape')
         try:
             webscrape_manager.scrape().to_csv(IOUtilities.get_scrape_output_file_name(), index = False)
         except Exception:
             logger.exception('Failed webscrape')
-        logger.info('Sleeping')
         webscrape_manager.sleep()
-        LoggerFactory.set_logging_settings()
+        try:
+            LoggerFactory().set_logging_settings()
+        except Exception:
+            logging.exception('Failed to set logger settings')
+            logging.critical('Exiting program')
+            exit()
 
 if __name__ == '__main__':
     main()
