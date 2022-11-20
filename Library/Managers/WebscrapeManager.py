@@ -23,10 +23,11 @@ class WebscrapeManager:
             webscraper.initialize_webdriver()
             for trip in self._trips:
                 while True:
-                    trip_info = ', '.join([f'{key}: {value}' for key, value in trip.get_search_settings().items()])
+                    trip_settings = trip.get_search_settings()
+                    trip_info = ', '.join([f'{key}: {value}' for key, value in trip_settings.items()])
                     self._logger.info(f'Scraping for trip {trip_info}')
                     try:
-                        flight_data = pd.concat([flight_data, webscraper.scrape(**trip.get_search_settings())])
+                        flight_data = pd.concat([flight_data, webscraper.scrape(**trip_settings)])
                         self._logger.info(f'Finished scraping flight data for trip {trip_info}')
                     except Exception:
                         self._logger.exception(f'Error scraping flight data for trip {trip_info}')
