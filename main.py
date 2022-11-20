@@ -1,5 +1,4 @@
 # TODO:
-    # Update trip such that user can't scrape for a past date
     # Add functionality such that you can only grab best trips recommended by google flights
     # Multithread such that trips get searched for at the same time
     # See why long term trips are failing
