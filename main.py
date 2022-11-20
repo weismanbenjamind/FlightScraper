@@ -109,7 +109,7 @@ def main():
     # Scrape
     while True:
         try:
-            webscrape_manager.scrape().to_csv(IOUtilities.get_scrape_output_file_name(), index = False)
+            webscrape_manager.scrape().to_csv(IOUtilities.get_scrape_output_file_path(), index = False)
         except Exception:
             logger.exception('Failed webscrape')
         webscrape_manager.sleep()
