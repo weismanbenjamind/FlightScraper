@@ -4,11 +4,7 @@ class CommandLineArgsValidator:
 
     @staticmethod
     def validate(args: Any) -> None:
-        target_keys = [
-            'user_inputs',
-            'appsettings'
-        ]
-        for key in target_keys:
+        for key in ['user_inputs', 'appsettings']:
             try:
                 getattr(args, key)
             except Exception as ex:
