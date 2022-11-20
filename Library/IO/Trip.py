@@ -27,7 +27,9 @@ class Trip:
             raise Exception(f'Date error with trip to {self.destination}')
 
         self._departure_date = DatetimeService.mm_dd_yyyy_to_datetime(self._departure_date)
+        self._initial_departure_date = self._departure_date
         self._return_date = DatetimeService.mm_dd_yyyy_to_datetime(self._return_date)
+        self._initial_return_date = self._return_date
         self._trip_length = DatetimeService.get_days_between_dates(self._return_date, self._departure_date)
         self._max_trip_date = DatetimeService.mm_dd_yyyy_to_datetime(self._max_trip_date)
 
@@ -38,6 +40,10 @@ class Trip:
         self._return_date = DatetimeService.add_days(self._return_date, 7)
         DateValidator.validate_day_of_week(self._return_date, self._returning_day)
         self._validate_date_less_than_max_date(self._return_date)
+
+    def reset(self):
+        self._departure_date = self._initial_departure_date
+        self._return_date = self._initial_return_date
 
     def _validate_date_less_than_max_date(self, date: datetime) -> None:
         if date > self._max_trip_date:

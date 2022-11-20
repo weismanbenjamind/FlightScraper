@@ -31,6 +31,7 @@ class WebscrapeManager:
                     except MaxTripDateError:
                         break
             webscraper.close()
+            self._trips = [trip.reset() for trip in self._trips]
         if (self._SORT_BY_COL) in flight_data.columns:
             flight_data.sort_values(by = self._SORT_BY_COL, inplace = True)
         return flight_data
