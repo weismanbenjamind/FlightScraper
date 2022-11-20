@@ -1,5 +1,5 @@
-#TODO:
-    # Add better exception handling
+# TODO:
+    # Reset tripts after each scrape
     # Add logging
         # Look into logging with retry functions
             # Make sure only log when retry occurs
@@ -119,6 +119,7 @@ def main():
             logger.exception('Failed webscrape')
         logger.info('Sleeping')
         webscrape_manager.sleep()
+        LoggerFactory.set_logging_settings()
 
 if __name__ == '__main__':
     main()

@@ -30,7 +30,7 @@ class LoggerFactory:
         return os.path.sep.join(
             [
                 self._log_file_parent_dir, 
-                f'Scrape_Log_{DatetimeService.get_current_date_and_time()}.log'
+                f'Scrape_Log_{DatetimeService.get_date_hours_minutes_seconds_mircroseconds()}.log'
             ]
         )
 
