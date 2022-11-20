@@ -1,5 +1,4 @@
 # TODO:
-    # Update trip such that user can't scrape for a past date
     # Add functionality such that you can only grab best trips recommended by google flights
     # Multithread such that trips get searched for at the same time
     # See why long term trips are failing
@@ -108,14 +107,17 @@ def main():
 
     # Scrape
     while True:
-        logger.info('Starting scrape')
         try:
-            webscrape_manager.scrape().to_csv(IOUtilities.get_scrape_output_file_name(), index = False)
+            webscrape_manager.scrape().to_csv(IOUtilities.get_scrape_output_file_path(), index = False)
         except Exception:
             logger.exception('Failed webscrape')
-        logger.info('Sleeping')
         webscrape_manager.sleep()
-        LoggerFactory.set_logging_settings()
+        try:
+            LoggerFactory().set_logging_settings()
+        except Exception:
+            logging.exception('Failed to set logger settings')
+            logging.critical('Exiting program')
+            exit()
 
 if __name__ == '__main__':
     main()

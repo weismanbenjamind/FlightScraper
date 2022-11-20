@@ -34,12 +34,16 @@ class Trip:
         self._max_trip_date = DatetimeService.mm_dd_yyyy_to_datetime(self._max_trip_date)
 
     def try_update(self) -> None:
-        self._departure_date = DatetimeService.add_days(self._departure_date, 7)
-        DateValidator.validate_day_of_week(self._departure_date, self._departure_day)
-        self._validate_date_less_than_max_date(self._departure_date)
-        self._return_date = DatetimeService.add_days(self._return_date, 7)
-        DateValidator.validate_day_of_week(self._return_date, self._returning_day)
-        self._validate_date_less_than_max_date(self._return_date)
+        try:
+            self._departure_date = DatetimeService.add_days(self._departure_date, 7)
+            DateValidator.validate_day_of_week(self._departure_date, self._departure_day)
+            self._validate_date_less_than_max_date(self._departure_date)
+            self._return_date = DatetimeService.add_days(self._return_date, 7)
+            DateValidator.validate_day_of_week(self._return_date, self._returning_day)
+            self._validate_date_less_than_max_date(self._return_date)
+            return True
+        except MaxTripDateError:
+            return False
 
     def reset(self):
         self._departure_date = self._initial_departure_date
@@ -59,6 +63,9 @@ class Trip:
             "departure_date": DatetimeService.datetime_to_mm_dd_yyyy(self._departure_date),
             "return_date": DatetimeService.datetime_to_mm_dd_yyyy(self._return_date)
         }
+
+    def get_departure_date(self):
+        return self._departure_date
 
 if __name__ == '__main__':
     pass
